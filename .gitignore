@@ -1,0 +1,6 @@
+serviceAccountKey.json
+node_modules
+dist
+docker-compose.yaml
+package-lock.json
+.env
