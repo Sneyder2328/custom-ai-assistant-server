@@ -1,6 +1,6 @@
 {
   "name": "@Sneyder2328/custom-ai-assistant-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
