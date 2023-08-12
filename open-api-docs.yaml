@@ -1,0 +1,597 @@
+openapi: 3.0.3
+info:
+  title: Custom AI Assistant API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message
+    UserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        fullName:
+          type: string
+      required:
+        - email
+        - password
+        - fullName
+    UserResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+      required:
+        - accessToken
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+      required:
+        - accessToken
+    FileResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        projectId:
+          type: string
+        filename:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - projectId
+        - filename
+        - status
+        - createdAt
+    WebpageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        projectId:
+          type: string
+        url:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        indexedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - projectId
+        - url
+        - status
+        - createdAt
+        - indexedAt
+    ProjectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+       - id
+       - name
+       - createdAt
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      operationId: userSignup
+      description: Endpoint to create a new user with the provided properties.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /login:
+    post:
+      summary: Log into a user account
+      operationId: userLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /logout:
+    post:
+      summary: User logout
+      operationId: userLogout
+      description: Endpoint to log out of a user account using an access token in the Authorization header.
+      responses:
+        "200":
+          description: User logged out successfully
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /projects:
+    post:
+      summary: Creates a new project.
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+      responses:
+        201:
+          description: The project has been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectResponse"
+        401:
+          description: The user is not authorized to create a project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: Lists the projects of an user.
+      operationId: listProjects
+      responses:
+        200:
+          description: The projects of the user have been successfully listed.
+          content:
+            application/json:
+              schema:
+                title: ListProjectsResponse
+                type: array
+                items:
+                  type: object
+                  title: ProjectResponse
+                  allOf:
+                    - $ref: "#/components/schemas/ProjectResponse"
+                    - type: object
+                      properties:
+                        chatbotName:
+                          type: string
+        401:
+          description: The user is not authorized to list projects.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /projects/{projectId}/files:
+    post:
+      summary: Add a file or multiple files to a project.
+      operationId: addProjectFile
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  description: The files to upload
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        201:
+          description: The file has been successfully added to the project.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: "#/components/schemas/FileResponse"
+        401:
+          description: The user is not authorized to add a file to the project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: The project could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: Lists the files of a project.
+      operationId: listProjectFiles
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The files of the project have been successfully listed.
+          content:
+            application/json:
+              schema:
+                type: array
+                title: ListFileResponses
+                items:
+                  type: object
+                  $ref: "#/components/schemas/FileResponse"
+        401:
+          description: The user is not authorized to list project files.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /projects/{projectId}/files/{fileId}:
+    delete:
+      summary: Deletes a file from a project.
+      operationId: deleteProjectFile
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The file has been successfully deleted.
+        401:
+          description: The user is not authorized to delete the file.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: The file could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  # /projects/{projectId}/webpages:
+  #   post:
+  #     summary: Adds a webpage to a project.
+  #     operationId: addProjectWebpage
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               url:
+  #                 type: string
+  #     responses:
+  #       201:
+  #         description: The webpage has been successfully added to the project.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               $ref: "#/components/schemas/WebpageResponse"
+  #       401:
+  #         description: The user is not authorized to add a webpage to the project.
+  #       404:
+  #         description: The project could not be found.
+  #   get:
+  #     summary: Lists the webpages of a project.
+  #     operationId: listProjectWebpages
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: The webpages of the project have been successfully listed.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: object
+  #                 $ref: "#/components/schemas/WebpageResponse"
+  #       401:
+  #         description: The user is not authorized to list project webpages.
+  # /projects/{projectId}/webpages/{webpageId}:
+  #   delete:
+  #     summary: Deletes a webpage from a project.
+  #     operationId: deleteProjectWebpage
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #       - name: webpageId
+  #         in: path
+  #         required: true
+  #         description: The ID of the webpage.
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: The webpage has been successfully deleted.
+  #       401:
+  #         description: The user is not authorized to delete the webpage.
+  #       404:
+  #         description: The webpage could not be found.
+  # /projects/{projectId}/conversations:
+  #   post:
+  #     summary: Create a new conversation in a project
+  #     operationId: createConversation
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       201:
+  #         description: Created
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 id:
+  #                   type: integer
+  #       401:
+  #         description: The user is not authorized to create new conversations.
+  #   get:
+  #     summary: Lists the conversations of a user in a project.
+  #     operationId: listConversations
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: The conversations of the user have been successfully listed.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: object
+  #                 properties:
+  #                   id:
+  #                     type: string
+  #                   createdAt:
+  #                     type: string
+  #                   title:
+  #                     type: string
+  #       401:
+  #         description: The user is not authorized to list conversations.
+  # /projects/{projectId}/conversations/{conversationId}/messages:
+  #   post:
+  #     summary: Sends a new message to a conversation.
+  #     operationId: sendNewConversationMessage
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #       - name: conversationId
+  #         in: path
+  #         required: true
+  #         description: The ID of the conversation.
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               id:
+  #                 type: string
+  #               author:
+  #                 type: string
+  #               content:
+  #                 type: string
+  #     responses:
+  #       201:
+  #         description: The new message has been successfully created.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 id:
+  #                   type: string
+  #                 createdAt:
+  #                   type: string
+  #                 author:
+  #                   type: string
+  #                 content:
+  #                   type: string
+  #       401:
+  #         description: The user is not authorized to send a new conversation message.
+  #   get:
+  #     summary: Lists the messages of a conversation.
+  #     operationId: listConversationMessages
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #       - name: conversationId
+  #         in: path
+  #         required: true
+  #         description: The ID of the conversation.
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: The messages of the conversation have been successfully listed.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: object
+  #                 properties:
+  #                   id:
+  #                     type: string
+  #                   createdAt:
+  #                     type: string
+  #                   author:
+  #                     type: string
+  #                   content:
+  #                     type: string
+  #       401:
+  #         description: The user is not authorized to list conversation messages.
+  # /projects/{projectId}/settings:
+  #   put:
+  #     summary: Updates the settings of a project.
+  #     operationId: updateProjectChatbotSettings
+  #     parameters:
+  #       - name: projectId
+  #         in: path
+  #         required: true
+  #         description: The ID of the project.
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               chatbotName:
+  #                 type: string
+  #               chatbotAvatar:
+  #                 type: string
+  #               themeColor:
+  #                 type: string
+  #               chatbotInitialMessage:
+  #                 type: string
+  #     responses:
+  #       200:
+  #         description: The chatbot settings have been successfully updated.
+  #       401:
+  #         description: The user is not authorized to update the chatbot settings.
+  #       404:
+  #         description: The project could not be found.

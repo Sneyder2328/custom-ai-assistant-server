@@ -21,7 +21,6 @@ export const authorizeMiddleware = [
 
       next();
     } catch (error) {
-      console.error(error);
       return next(ERROR_FACTORY.create(AppError.UNAUTHORIZED));
     }
   },
