@@ -1,5 +1,5 @@
 {
-  "name": "@custom-ai-assistant/server",
+  "name": "@Sneyder2328/custom-ai-assistant-server",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -13,6 +13,7 @@
   },
   "author": "Sneyder Angulo",
   "license": "ISC",
+  "repository": "https://github.com/Sneyder2328/custom-ai-assistant-server.git",
   "dependencies": {
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
