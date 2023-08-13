@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { authorizeMiddleware } from "../../middlewares/authorizeMiddleware";
-import { createFilesController, deleteFileController, getFilesController } from "./files.controllers";
+import { authorizeMiddleware } from "../../middlewares/authentication.middleware.js";
+import { createFilesController, deleteFileController, getFilesController } from "./files.controllers.js";
+import { validateFiles } from "./files.validators.js";
 
 const router = Router();
 
@@ -8,6 +9,7 @@ const router = Router();
 router.post(
   "/projects/:projectId/files",
   authorizeMiddleware,
+  validateFiles,
   createFilesController
 );
 

@@ -1,7 +1,7 @@
 import { Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
-import Project from './Project';
-import Session from './Session';
-import Message from './Message';
+import Project from './Project.js';
+import Session from './Session.js';
+import Message from './Message.js';
 
 @Table({ tableName: 'conversation' })
 export default class Conversation extends Model {

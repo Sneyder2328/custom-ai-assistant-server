@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import compression from "compression";
 import cors from "cors";
 
-import router from "./routes";
-import { corsOptions } from "./middlewares/corsOptions";
+import router from "./routes/index.js";
+import { corsOptions } from "./middlewares/corsOptions.js";
 
 export const app = express();
 

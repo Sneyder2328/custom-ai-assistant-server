@@ -1,4 +1,4 @@
-import { ERRORS, ErrorParams } from "./AppErrors";
-import { ErrorFactory } from "./ErrorFactory";
+import { ERRORS, ErrorParams } from "./AppErrors.js";
+import { ErrorFactory } from "./ErrorFactory.js";
 
 export const ERROR_FACTORY = new ErrorFactory<ErrorParams>(ERRORS);

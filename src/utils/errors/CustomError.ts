@@ -1,6 +1,6 @@
-import { HttpResponseCodes } from "../constants/httpResponseCodes";
-import { AppError } from "./AppErrors";
-import { ErrorFactory } from "./ErrorFactory";
+import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
+import { AppError } from "./AppErrors.js";
+import { ErrorFactory } from "./ErrorFactory.js";
 
 export class CustomError extends Error {
   statusCode: HttpResponseCodes;

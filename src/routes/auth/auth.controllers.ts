@@ -5,9 +5,9 @@ import {
   createUser,
   decodeFirebaseToken,
   getUser,
-} from "./auth.services";
-import { methodWrapper } from "../../middlewares/methodWrapper";
-import { createController } from "../../utils/controllers/createController";
+} from "./auth.services.js";
+import { methodWrapper } from "../../middlewares/methodWrapper.js";
+import { createController } from "../../utils/controllers/createController.js";
 
 export const createUserController = createController(
   async (req: Request, res: Response) => {

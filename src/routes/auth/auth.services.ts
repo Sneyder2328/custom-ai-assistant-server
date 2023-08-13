@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import admin from "firebase-admin";
-import Session from "../../models/Session";
-import User from "../../models/User";
+import Session from "../../models/Session.js";
+import User from "../../models/User.js";
 import { DecodedIdToken } from "firebase-admin/auth";
 
 export const decodeFirebaseToken = async (

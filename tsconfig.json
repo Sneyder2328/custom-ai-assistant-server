@@ -2,20 +2,20 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "./src",
-    "target": "es6",
+    "target": "ES2020",
     "experimentalDecorators": true,
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "Node16",
     "sourceMap": true,
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "lib": [
-      "es2019"
+      "ES2020"
     ],                             
     "allowJs": true,
     "noImplicitAny": false,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./src/types", "./node_module/@types"]

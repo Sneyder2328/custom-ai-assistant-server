@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { createProject, getProjects } from "./projects.services";
-import { createController } from "../../utils/controllers/createController";
+import { createProject, getProjects } from "./projects.services.js";
+import { createController } from "../../utils/controllers/createController.js";
 
 export const createProjectController = createController(
   async (

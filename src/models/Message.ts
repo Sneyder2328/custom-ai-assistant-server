@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import Conversation from './Conversation';
+import Conversation from './Conversation.js';
 
 enum MessageAuthor {
   User = 'user',

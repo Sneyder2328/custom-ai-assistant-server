@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 import { cert } from "firebase-admin/app";
-import serviceAccount from "./serviceAccountKey.json";
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -8,14 +8,8 @@ admin.initializeApp({
   credential: cert(serviceAccount),
 });
 
-const env = (process.env.NODE_ENV || "development").trim();
-
-if (env === "development") {
-  require("dotenv").config();
-}
-
-import sequelize from "./config/database";
-import { app } from "./app";
+import sequelize from "./config/database.js";
+import { app } from "./app.js";
 
 // Start the server
 sequelize.sync().then(() => {

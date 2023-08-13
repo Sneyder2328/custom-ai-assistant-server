@@ -1,12 +1,18 @@
+const env = (process.env.NODE_ENV || "development").trim();
+if (env === "development") {
+  const dotenv = await import("dotenv");
+  dotenv.config();
+}
+
 import { Sequelize } from "sequelize-typescript";
-import User from "../models/User";
-import Project from "../models/Project";
-import ProjectSettings from "../models/ProjectSettings";
-import Conversation from "../models/Conversation";
-import Session from "../models/Session";
-import Message from "../models/Message";
-import File from "../models/File";
-import Webpage from "../models/Webpage";
+import User from "../models/User.js";
+import Project from "../models/Project.js";
+import ProjectSettings from "../models/ProjectSettings.js";
+import Conversation from "../models/Conversation.js";
+import Session from "../models/Session.js";
+import Message from "../models/Message.js";
+import File from "../models/File.js";
+import Webpage from "../models/Webpage.js";
 import { Dialect } from "sequelize";
 
 if (!process.env.DB_NAME) throw new Error("DB_NAME is not defined");

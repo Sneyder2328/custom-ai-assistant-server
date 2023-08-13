@@ -1,5 +1,5 @@
-import { HttpResponseCodes } from "../constants/httpResponseCodes";
-import { ErrorMap } from "./ErrorFactory";
+import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
+import { ErrorMap } from "./ErrorFactory.js";
 
 export const enum AppError {
   ACCESS_TOKEN_NOT_PROVIDED = "access-token-not-provided",

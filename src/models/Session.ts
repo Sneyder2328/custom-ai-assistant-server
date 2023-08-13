@@ -6,7 +6,7 @@ import {
   ForeignKey,
   DataType,
 } from "sequelize-typescript";
-import User from "./User";
+import User from "./User.js";
 
 @Table({ tableName: "session" })
 export default class Session extends Model {

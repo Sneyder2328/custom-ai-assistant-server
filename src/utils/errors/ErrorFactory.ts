@@ -1,6 +1,6 @@
-import { HttpResponseCodes } from "../constants/httpResponseCodes";
-import { AppError } from "./AppErrors";
-import { CustomError } from "./CustomError";
+import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
+import { AppError } from "./AppErrors.js";
+import { CustomError } from "./CustomError.js";
 
 export type ErrorMap<ErrorCode extends string> = {
   readonly [K in ErrorCode]: {

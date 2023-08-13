@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, DataType, Default, HasMany } from 'sequelize-typescript';
-import Project from './Project';
+import Project from './Project.js';
 
 @Table({ tableName: 'user' })
 export default class User extends Model {

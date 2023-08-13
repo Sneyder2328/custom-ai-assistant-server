@@ -1,5 +1,5 @@
 import { Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import Project from './Project';
+import Project from './Project.js';
 
 @Table({ tableName: 'project_settings' })
 export default class ProjectSettings extends Model {

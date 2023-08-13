@@ -7,7 +7,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import Project from "./Project";
+import Project from "./Project.js";
 
 enum WebpageStatus {
   Crawling = "crawling",

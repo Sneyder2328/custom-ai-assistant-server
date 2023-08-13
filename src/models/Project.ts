@@ -8,11 +8,11 @@ import {
   BelongsTo,
   HasMany,
 } from "sequelize-typescript";
-import User from "./User";
-import ProjectSettings from "./ProjectSettings";
-import File from "./File";
-import Webpage from "./Webpage";
-import Conversation from "./Conversation";
+import User from "./User.js";
+import ProjectSettings from "./ProjectSettings.js";
+import File from "./File.js";
+import Webpage from "./Webpage.js";
+import Conversation from "./Conversation.js";
 
 @Table({
   tableName: "project",

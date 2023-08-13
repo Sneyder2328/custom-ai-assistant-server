@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authorizeMiddleware } from "../../middlewares/authorizeMiddleware";
-import { createProjectController, getProjectsController } from "./projects.controllers";
-import { validateProjectCreate } from "./projects.validators";
+import { authorizeMiddleware } from "../../middlewares/authentication.middleware.js";
+import { createProjectController, getProjectsController } from "./projects.controllers.js";
+import { validateProjectCreate } from "./projects.validators.js";
 
 const router = Router();
 
