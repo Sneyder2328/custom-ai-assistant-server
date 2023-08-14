@@ -8,15 +8,14 @@ export const checkValidationsMiddleware = (
   next: NextFunction
 ) => {
   const errors = validationResult(req);
-  
+
   if (errors.isEmpty()) return next();
 
-  const extractedErrors = errors.array().map((err) => {
-    // @ts-ignore
-    return { [`${err.location}.${err.path}`]: err.msg };
-  });
+  // Create a new Error object
+  const err = new Error("Validation failed");
+  err["statusCode"] = HttpResponseCodes.UNPROCESSABLE_ENTITY;
+  err["validationErrors"] = errors.array();
 
-  return res.status(HttpResponseCodes.UNPROCESSABLE_ENTITY).json({
-    errors: extractedErrors,
-  });
+  // Pass the error to the error handling middleware
+  return next(err);
 };
