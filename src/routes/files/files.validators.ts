@@ -1,5 +1,9 @@
 import { param } from "express-validator";
 
-export const validateFiles = [
-  param("projectId").isUUID()
-];
+const validateProjectId = param("projectId").isUUID();
+
+export const validatePostFiles = [validateProjectId];
+
+export const validateGetFiles = [validateProjectId];
+
+export const validateDeleteFile = [validateProjectId, param("fileId").isUUID()];

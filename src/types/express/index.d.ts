@@ -7,6 +7,7 @@ declare global {
       user?: {
         id: string;
       };
+      files: any[];
     }
   }
 }

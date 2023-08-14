@@ -1,7 +1,7 @@
 import { Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import Project from './Project.js';
 
-enum FileStatus {
+export enum FileStatus {
   Indexing = 'indexing',
   Failed = 'failed',
   Indexed = 'indexed'

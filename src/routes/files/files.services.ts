@@ -1,69 +1,44 @@
 import { v4 as uuidv4 } from "uuid";
-import { TextLoader } from "langchain/document_loaders/fs/text";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { CSVLoader } from "langchain/document_loaders/fs/csv";
-import { JSONLoader } from "langchain/document_loaders/fs/json";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { BaseDocumentLoader } from "langchain/document_loaders/base";
 import { Document } from "langchain/document";
-import File from "../../models/File.js";
+import File, { FileStatus } from "../../models/File.js";
+import { vectorDataSource } from "../../services/vector-stores/index.js";
+import { FILE_EVENTS, filesEmitter } from "./files.emitters.js";
+import { loadDocumentsFromFiles } from "../../services/vector-stores/document.loaders.js";
 
-export const createFiles = async (files) => {
-  let docsPromises: { docs: Promise<Document[]>; metadata: any }[] = [];
+export const createFiles = async (files: any[], projectId: string) => {
+  const filesCreated = await saveFileRecords(files, projectId);
+  const filesIds = filesCreated.map((file) => file.id);
+  filesEmitter.emit(FILE_EVENTS.INDEX, files, filesIds, projectId);
 
-  const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-  });
-
-  for (let index = 0; index < files.length; index++) {
-    const file = files[index];
-    console.log("file=", file);
-    const loader = getDocumentLoader(file);
-    docsPromises.push({
-      docs: loader.loadAndSplit(textSplitter),
-      metadata: { source: file.name },
-    });
-  }
-  // const docs: Document[][] = await Promise.all(
-  // docsPromises.map((p) =>
-  //   p.docs.then((docs) => addMetadata(docs, p.metadata))
-  // )
-  // );
-
-  // const files = await File.bulkCreate([
-  //   {
-  //     id: uuidv4(),
-  //     project_id: req.params.projectId,
-  //     filename: "file.txt",
-  //     status: "indexing",
-  //     tokens_count: 0,
-  //     created_at: new Date(),
-  //   },
-  // ]);
+  return filesCreated;
 };
 
-export const getDocumentLoader = (file): BaseDocumentLoader => {
+const saveFileRecords = async (files: any[], projectId: string) => {
+  return await File.bulkCreate(
+    files.map((file) => ({
+      id: uuidv4(),
+      projectId,
+      filename: file.originalFilename,
+      status: FileStatus.Indexing,
+    }))
+  );
+};
+
+export const indexFiles = async (
+  files: any[],
+  filesIds: string[],
+  projectId: string
+) => {
+  const matrixDocuments: Document[][] = await loadDocumentsFromFiles(files);
+  await vectorDataSource.saveDocuments(matrixDocuments.flat(), projectId);
+  await updateFilesStatus(filesIds, FileStatus.Indexed);
+};
+
+const updateFilesStatus = async (filesIds: string[], status: FileStatus) => {
   try {
-    let loader;
-    switch (file.mimetype) {
-      case "text/plain":
-        loader = new TextLoader(file);
-        break;
-      case "application/pdf":
-        loader = new PDFLoader(file);
-        new PDFLoader(file).load();
-        break;
-      case "text/csv":
-        loader = new CSVLoader(file);
-        break;
-      case "application/json":
-        loader = new JSONLoader(file);
-        break;
-    }
-    return loader;
-  } catch (err) {
-    console.error("getDocumentLoader err=", err, "file=", file);
-    return;
+    await File.update({ status }, { where: { id: filesIds } });
+  } catch (error) {
+    console.error("An error occurred while updating files:", error);
   }
 };
 
@@ -73,7 +48,7 @@ export const getFiles = async (projectId: string) => {
   });
 };
 
-export const deleteFile = async (fileId: string, projectId: string) => {
+export const deleteFile = async (projectId: string, fileId: string) => {
   await File.destroy({
     where: { id: fileId, projectId },
   });

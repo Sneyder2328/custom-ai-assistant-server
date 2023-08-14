@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authorizeMiddleware } from "../../middlewares/authentication.middleware.js";
 import { createProjectController, getProjectsController } from "./projects.controllers.js";
-import { validateProjectCreate } from "./projects.validators.js";
+import { validateCreateProject } from "./projects.validators.js";
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
 router.post(
   "/projects",
   authorizeMiddleware,
-  validateProjectCreate,
+  validateCreateProject,
   createProjectController
 );
 
