@@ -10,9 +10,11 @@ admin.initializeApp({
 
 import sequelize from "./config/database.js";
 import { app } from "./app.js";
+import { vectorDataSource } from "./services/vector-stores/index.js";
 
 // Start the server
-sequelize.sync().then(() => {
+sequelize.sync().then(async () => {
+  await vectorDataSource.init(); // init vector store database
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log("Server is running on port", port);

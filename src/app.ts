@@ -74,27 +74,6 @@ app.use(router);
 //   }
 // );
 
-// // Create a new conversation in a project
-// app.post(
-//   "/projects/:projectId/conversations",
-//   authorizeMiddleware,
-
-//   async (req: Request, res: Response) => {
-//     try {
-//       const conversation = await Conversation.create({
-//         id: uuidv4(),
-//         project_id: req.params.projectId,
-//         title: req.body.title,
-//         created_at: new Date(),
-//       });
-
-//       res.status(201).json(conversation);
-//     } catch (error) {
-//       res.status(500).json({ error: "Internal server error" });
-//     }
-//   }
-// );
-
 // // Lists the conversations of a user in a project
 // app.get(
 //   "/projects/:projectId/conversations",
