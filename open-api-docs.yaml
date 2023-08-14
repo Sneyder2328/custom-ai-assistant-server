@@ -428,28 +428,37 @@ paths:
   #         description: The user is not authorized to delete the webpage.
   #       404:
   #         description: The webpage could not be found.
-  # /projects/{projectId}/conversations:
-  #   post:
-  #     summary: Create a new conversation in a project
-  #     operationId: createConversation
-  #     parameters:
-  #       - name: projectId
-  #         in: path
-  #         required: true
-  #         schema:
-  #           type: string
-  #     responses:
-  #       201:
-  #         description: Created
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #               properties:
-  #                 id:
-  #                   type: integer
-  #       401:
-  #         description: The user is not authorized to create new conversations.
+  /projects/{projectId}/conversations:
+    post:
+      summary: Create a new conversation in a project
+      operationId: createConversation
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        401:
+          description: The user is not authorized to create new conversations.
   #   get:
   #     summary: Lists the conversations of a user in a project.
   #     operationId: listConversations
