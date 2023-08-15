@@ -11,14 +11,13 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node-esm src/index.ts",
     "generate:sdk": "npx @openapitools/openapi-generator-cli generate -i open-api-docs.yaml -g typescript-axios -o ../sdk",
-    "generate:route:new": "node ./node_modules/@sneyder2328/custom-ai-assistant-generator/dist/src/index.js gen route new"
+    "generate:route:new": "custom-ai-assistant-cli gen route new"
   },
   "author": "Sneyder Angulo",
   "license": "ISC",
   "repository": "https://github.com/Sneyder2328/custom-ai-assistant-server.git",
   "dependencies": {
     "@pinecone-database/pinecone": "^0.1.6",
-    "@sneyder2328/custom-ai-assistant-generator": "npm:@Sneyder2328/custom-ai-assistant-generator@^1.3.0",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -35,6 +34,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@Sneyder2328/custom-ai-assistant-generator": "1.5.2",
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@s-ui/mono": "^2.35.0",
     "@types/express": "^4.17.17",
