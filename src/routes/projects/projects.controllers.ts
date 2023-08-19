@@ -3,10 +3,7 @@ import { createProject, getProjects } from "./projects.services.js";
 import { createController } from "../../utils/controllers/createController.js";
 
 export const createProjectController = createController(
-  async (
-    req: Request,
-    res: Response
-  ) => {
+  async (req: Request, res: Response) => {
     const project = await createProject(req.user.id, req.body.name);
 
     res.status(201).json(project);

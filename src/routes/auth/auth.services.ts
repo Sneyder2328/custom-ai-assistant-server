@@ -16,8 +16,8 @@ export const createUser = async ({
   email,
 }: {
   id: string;
-  fullName: string;
-  email: string;
+  fullName?: string;
+  email?: string;
 }) => {
   const user = await User.create({
     id,
@@ -53,7 +53,7 @@ export const createFirebaseUser = async ({
   return firebaseUser;
 };
 
-export const createSession = async (userId: string): Promise<Session> => {
+export const createSession = async (userId?: string): Promise<Session> => {
   const session = await Session.create({
     id: uuidv4(),
     userId: userId,

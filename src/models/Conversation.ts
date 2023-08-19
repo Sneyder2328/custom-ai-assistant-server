@@ -1,7 +1,7 @@
 import { Table, Column, Model, PrimaryKey, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import Project from './Project.js';
-import Session from './Session.js';
 import Message from './Message.js';
+import User from './User.js';
 
 @Table({ tableName: 'conversation' })
 export default class Conversation extends Model {
@@ -16,15 +16,15 @@ export default class Conversation extends Model {
   @Column(DataType.STRING)
   title!: string;
 
-  @ForeignKey(() => Session)
-  @Column(DataType.STRING)
-  sessionId!: string;
-
   @BelongsTo(() => Project)
   project!: Project;
 
-  @BelongsTo(() => Session)
-  session!: Session;
+  @ForeignKey(() => User)
+  @Column(DataType.STRING)
+  userId!: string;
+
+  @BelongsTo(() => User)
+  user!: User;
 
   @HasMany(() => Message)
   messages!: Message[];

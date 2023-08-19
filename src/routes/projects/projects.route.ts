@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { authorizeMiddleware } from "../../middlewares/authentication.middleware.js";
-import { createProjectController, getProjectsController } from "./projects.controllers.js";
+import { authenticateMiddleware } from "../../middlewares/authentication.middleware.js";
+import {
+  createProjectController,
+  getProjectsController,
+} from "./projects.controllers.js";
 import { validateCreateProject } from "./projects.validators.js";
 
 const router = Router();
@@ -8,12 +11,12 @@ const router = Router();
 // Creates a new project
 router.post(
   "/projects",
-  authorizeMiddleware,
+  authenticateMiddleware(),
   validateCreateProject,
   createProjectController
 );
 
 // Lists the projects of a user
-router.get("/projects", authorizeMiddleware, getProjectsController);
+router.get("/projects", authenticateMiddleware(), getProjectsController);
 
 export default router;

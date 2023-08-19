@@ -1,13 +1,13 @@
+import User from "../../models/User.ts";
+
 export {};
 
 declare global {
   namespace Express {
     export interface Request {
       accessToken?: string;
-      user?: {
-        id: string;
-      };
-      files: any[];
+      user?: User;
+      files?: any[];
     }
   }
 }

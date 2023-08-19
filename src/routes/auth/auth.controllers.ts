@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 import {
   createFirebaseUser,
   createSession,
@@ -6,7 +7,6 @@ import {
   decodeFirebaseToken,
   getUser,
 } from "./auth.services.js";
-import { methodWrapper } from "../../middlewares/methodWrapper.js";
 import { createController } from "../../utils/controllers/createController.js";
 
 export const createUserController = createController(
@@ -40,6 +40,16 @@ export const loginController = createController(
         email,
       });
     }
+    const session = await createSession(user.id);
+    res.status(200).json({
+      accessToken: session.id,
+    });
+  }
+);
+
+export const createAnonymousUserController = createController(
+  async (req: Request, res: Response) => {
+    const user = await createUser({ id: uuidv4()});
     const session = await createSession(user.id);
     res.status(200).json({
       accessToken: session.id,
