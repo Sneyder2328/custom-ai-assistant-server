@@ -11,7 +11,9 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node-esm src/index.ts",
     "generate:sdk": "npx @openapitools/openapi-generator-cli generate -i open-api-docs.yaml -g typescript-axios -o ../sdk",
-    "generate:route:new": "custom-ai-assistant-cli gen route new"
+    "generate:route:new": "custom-ai-assistant-cli gen route new",
+    "test:generate:route:new": "node ../generator/dist/src/index.js gen route new",
+    "test:generate:route:add": "node ../generator/dist/src/index.js gen route add"
   },
   "author": "Sneyder Angulo",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-timeout-handler": "^2.2.2",
     "express-validator": "^7.0.1",
     "firebase-admin": "^11.10.0",
     "formidable": "^3.5.0",
@@ -34,9 +37,9 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@Sneyder2328/custom-ai-assistant-generator": "1.5.2",
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@s-ui/mono": "^2.35.0",
+    "@sneyder2328/custom-ai-assistant-generator": "1.5.3",
     "@types/express": "^4.17.17",
     "@types/node": "^20.4.2",
     "@types/uuid": "^9.0.2",

@@ -1,21 +1,25 @@
-import express from "express";
-import bodyParser from "body-parser";
+import express, { json } from "express";
 import compression from "compression";
 import cors from "cors";
 
-import router from "./routes/index.js";
+import routes from "./routes/index.js";
 import { corsOptions } from "./middlewares/corsOptions.js";
+import { timeoutMiddleware } from "./middlewares/timeout.middleware.js";
+import { errorsHandlerMiddleware } from "./middlewares/errors-handler.middleware.js";
 
 export const app = express();
+
+app.use(timeoutMiddleware);
 
 app.use(compression()); // compress all responses
 
 app.use(cors(corsOptions));
 
-app.use(bodyParser.json());
+app.use(json());
 
-app.use(router);
+app.use(routes);
 
+app.use(errorsHandlerMiddleware);
 
 // // Adds a webpage to a project
 // app.post(
@@ -68,23 +72,6 @@ app.use(router);
 //         where: { id: req.params.webpageId, project_id: req.params.projectId },
 //       });
 //       res.sendStatus(200);
-//     } catch (error) {
-//       res.status(500).json({ error: "Internal server error" });
-//     }
-//   }
-// );
-
-// // Lists the conversations of a user in a project
-// app.get(
-//   "/projects/:projectId/conversations",
-//   authorizeMiddleware,
-
-//   async (req: Request, res: Response) => {
-//     try {
-//       const conversations = await Conversation.findAll({
-//         where: { project_id: req.params.projectId },
-//       });
-//       res.status(200).json(conversations);
 //     } catch (error) {
 //       res.status(500).json({ error: "Internal server error" });
 //     }
