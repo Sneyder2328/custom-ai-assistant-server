@@ -114,9 +114,9 @@ components:
           type: string
           format: date-time
       required:
-       - id
-       - name
-       - createdAt
+        - id
+        - name
+        - createdAt
 paths:
   /users:
     post:
@@ -459,118 +459,118 @@ paths:
                     type: integer
         401:
           description: The user is not authorized to create new conversations.
-  #   get:
-  #     summary: Lists the conversations of a user in a project.
-  #     operationId: listConversations
-  #     parameters:
-  #       - name: projectId
-  #         in: path
-  #         required: true
-  #         description: The ID of the project.
-  #         schema:
-  #           type: string
-  #     responses:
-  #       200:
-  #         description: The conversations of the user have been successfully listed.
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 type: object
-  #                 properties:
-  #                   id:
-  #                     type: string
-  #                   createdAt:
-  #                     type: string
-  #                   title:
-  #                     type: string
-  #       401:
-  #         description: The user is not authorized to list conversations.
-  # /projects/{projectId}/conversations/{conversationId}/messages:
-  #   post:
-  #     summary: Sends a new message to a conversation.
-  #     operationId: sendNewConversationMessage
-  #     parameters:
-  #       - name: projectId
-  #         in: path
-  #         required: true
-  #         description: The ID of the project.
-  #         schema:
-  #           type: string
-  #       - name: conversationId
-  #         in: path
-  #         required: true
-  #         description: The ID of the conversation.
-  #         schema:
-  #           type: string
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             type: object
-  #             properties:
-  #               id:
-  #                 type: string
-  #               author:
-  #                 type: string
-  #               content:
-  #                 type: string
-  #     responses:
-  #       201:
-  #         description: The new message has been successfully created.
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #               properties:
-  #                 id:
-  #                   type: string
-  #                 createdAt:
-  #                   type: string
-  #                 author:
-  #                   type: string
-  #                 content:
-  #                   type: string
-  #       401:
-  #         description: The user is not authorized to send a new conversation message.
-  #   get:
-  #     summary: Lists the messages of a conversation.
-  #     operationId: listConversationMessages
-  #     parameters:
-  #       - name: projectId
-  #         in: path
-  #         required: true
-  #         description: The ID of the project.
-  #         schema:
-  #           type: string
-  #       - name: conversationId
-  #         in: path
-  #         required: true
-  #         description: The ID of the conversation.
-  #         schema:
-  #           type: string
-  #     responses:
-  #       200:
-  #         description: The messages of the conversation have been successfully listed.
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 type: object
-  #                 properties:
-  #                   id:
-  #                     type: string
-  #                   createdAt:
-  #                     type: string
-  #                   author:
-  #                     type: string
-  #                   content:
-  #                     type: string
-  #       401:
-  #         description: The user is not authorized to list conversation messages.
+    get:
+      summary: Lists the conversations of a user in a project.
+      operationId: listConversations
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The conversations of the user have been successfully listed.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    createdAt:
+                      type: string
+                    title:
+                      type: string
+        401:
+          description: The user is not authorized to list conversations.
+  /projects/{projectId}/conversations/{conversationId}/messages:
+    post:
+      summary: Sends a new message to a conversation.
+      operationId: sendNewConversationMessage
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+        - name: conversationId
+          in: path
+          required: true
+          description: The ID of the conversation.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                author:
+                  type: string
+                content:
+                  type: string
+      responses:
+        201:
+          description: The new message has been successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  createdAt:
+                    type: string
+                  author:
+                    type: string
+                  content:
+                    type: string
+        401:
+          description: The user is not authorized to send a new conversation message.
+    get:
+      summary: Lists the messages of a conversation.
+      operationId: listConversationMessages
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: The ID of the project.
+          schema:
+            type: string
+        - name: conversationId
+          in: path
+          required: true
+          description: The ID of the conversation.
+          schema:
+            type: string
+      responses:
+        200:
+          description: The messages of the conversation have been successfully listed.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    createdAt:
+                      type: string
+                    author:
+                      type: string
+                    content:
+                      type: string
+        401:
+          description: The user is not authorized to list conversation messages.
   # /projects/{projectId}/settings:
   #   put:
   #     summary: Updates the settings of a project.

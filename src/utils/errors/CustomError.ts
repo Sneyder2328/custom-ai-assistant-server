@@ -1,12 +1,13 @@
 import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
-import { AppError } from "./AppErrors.js";
 import { ErrorFactory } from "./ErrorFactory.js";
+
+const ERROR_NAME = 'CustomError';
 
 export class CustomError extends Error {
   statusCode: HttpResponseCodes;
 
   constructor(
-    name: AppError = AppError.DEFAULT_ERROR,
+    name: string = ERROR_NAME,
     statusCode = HttpResponseCodes.INTERNAL_SERVER_ERROR,
     message: string,
     /** Custom data for this error. */

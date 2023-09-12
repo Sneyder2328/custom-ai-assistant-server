@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpResponseCodes } from "../utils/constants/httpResponseCodes.js";
-import { AppError } from "../utils/errors/AppErrors.js";
+import { AppError } from "../utils/constants/AppErrors.js";
 import { ERROR_FACTORY } from "../utils/errors/index.js";
 
 export const errorsHandlerMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {

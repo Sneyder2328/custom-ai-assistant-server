@@ -6,7 +6,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { BaseDocumentLoader } from "langchain/document_loaders/base";
 import { Document } from "langchain/document";
 import { ERROR_FACTORY } from "../../utils/errors/index.js";
-import { AppError } from "../../utils/errors/AppErrors.js";
+import { AppError } from "../../utils/constants/AppErrors.js";
 
 const addMetadata = (docs: Document[], metadata: any) => {
   return docs.map((doc) => ({ ...doc, metadata }));

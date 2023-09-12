@@ -1,5 +1,5 @@
-import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
-import { ErrorMap } from "./ErrorFactory.js";
+import { HttpResponseCodes } from "../utils/constants/httpResponseCodes.js";
+import { ErrorFactory, ErrorMap } from "../utils/errors/ErrorFactory.js";
 
 export enum AppError {
   ACCESS_TOKEN_NOT_PROVIDED = "access-token-not-provided",
@@ -48,3 +48,5 @@ export interface ErrorParams {
   [AppError.PROJECT_NOT_EXISTENT]: { projectId: string };
   [AppError.NO_ACCESS_TO_PROJECT]: { projectId: string };
 }
+
+export const ERROR_FACTORY = new ErrorFactory<ErrorParams>(ERRORS);

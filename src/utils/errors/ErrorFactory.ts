@@ -1,5 +1,4 @@
 import { HttpResponseCodes } from "../constants/httpResponseCodes.js";
-import { AppError } from "./AppErrors.js";
 import { CustomError } from "./CustomError.js";
 
 export type ErrorMap<ErrorCode extends string> = {
@@ -23,11 +22,12 @@ function replaceTemplate(template: string, data: ErrorData): string {
 }
 
 export class ErrorFactory<
-  ErrorParams extends { readonly [K in AppError]?: ErrorData } = {}
+  ErrorCode extends string,
+  ErrorParams extends { readonly [K in ErrorCode]?: ErrorData } = {}
 > {
-  constructor(private readonly errors: ErrorMap<AppError>) {}
+  constructor(private readonly errors: ErrorMap<ErrorCode>) {}
 
-  create<K extends AppError>(
+  create<K extends ErrorCode>(
     code: K,
     ...data: K extends keyof ErrorParams ? [ErrorParams[K]] : []
   ): CustomError {

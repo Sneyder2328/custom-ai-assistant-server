@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { getSession, getUser } from "../routes/auth/auth.services.js";
 import { validateAccessToken } from "../validators/validateAccessToken.js";
 import { ERROR_FACTORY } from "../utils/errors/index.js";
-import { AppError } from "../utils/errors/AppErrors.js";
+import { AppError } from "../utils/constants/AppErrors.js";
 import { checkValidationsMiddleware } from "./check-validations.middleware.js";
 
 type Params = { allowTempSessions?: boolean };
